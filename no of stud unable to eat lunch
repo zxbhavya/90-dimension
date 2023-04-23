@@ -1,0 +1,31 @@
+#include <queue>
+#include <vector>
+
+class Solution {
+public:
+    int countStudents(std::vector<int>& students, std::vector<int>& sandwiches) {
+        std::queue<int> q; // queue to store the indices of students
+        int n = students.size();
+        for (int i = 0; i < n; i++) {
+            q.push(i);
+        }
+
+        int idx = 0; // index of the current sandwich in the stack
+        while (!q.empty()) {
+            int student = q.front();
+            q.pop();
+
+            if (students[student] == sandwiches[idx]) {
+                idx++; // student takes the sandwich
+            } else {
+                q.push(student); // student goes to the end of the queue
+            }
+
+            if (q.size() == n - idx) {
+                break; // all remaining students prefer the remaining sandwiches
+            }
+        }
+
+        return q.size(); // number of students who didn't get to eat
+    }
+};
