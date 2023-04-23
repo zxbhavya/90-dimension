@@ -1,0 +1,38 @@
+#include <queue>
+#include <vector>
+
+class Solution {
+public:
+    int buyTicketTime(std::vector<int>& tickets, int k) {
+        int n = tickets.size();
+        std::queue<int> q; // queue to store the indices of people in the line
+        std::priority_queue<int> pq; // max-heap to store the remaining time of people in the line
+
+        for (int i = 0; i < n; i++) {
+            q.push(i);
+            pq.push(tickets[i]);
+        }
+
+        int time = 0;
+        while (!pq.empty()) {
+            int curr = q.front();
+            q.pop();
+
+            if (tickets[curr] < pq.top()) {
+                q.push(curr);
+            } else {
+                pq.pop();
+                time++;
+                tickets[curr]--;
+
+                if (curr == k) {
+                    return time;
+                }
+            }
+
+            q.push(curr);
+        }
+
+        return time;
+    }
+};
